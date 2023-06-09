@@ -5,6 +5,7 @@ from autoslug import AutoSlugField
 from django.utils.text import slugify
 
 class RolesModel(models.Model):
+    app_label = 'account'
     name = models.CharField(max_length=150, unique=True)
     permissions = models.ManyToManyField(Permission, blank=True)
 
