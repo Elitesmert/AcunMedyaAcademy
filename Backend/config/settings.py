@@ -28,6 +28,15 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
 ALLOWED_HOSTS = []
 
+# RESTFRAMEWORK SETTINGS
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
+
 
 # INSTALLED APPS SETTINGS
 INSTALLED_APPS = [
@@ -98,9 +107,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # DJANGO LANGUAGE SETTINGS
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'tr-TR'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Istanbul'
 
 USE_I18N = True
 

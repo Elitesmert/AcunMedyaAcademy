@@ -1,3 +1,44 @@
 from django.contrib import admin
+from .models import *
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import Group
 
-# Register your models here.
+@admin.register(CustomUserModel)
+class CustomUserAdmin(UserAdmin):
+    list_filter = ('username', 'email')
+    filter_horizontal = []
+
+    fieldsets = UserAdmin.fieldsets + (
+        (
+            'Ek ayarlar',  # you can also use None
+            {
+                'fields': (
+                    'department',
+                    'avatar',
+                    'period'
+                ),
+            },
+        ),
+        (
+            'Sosyal Medya Hesapları',  # you can also use None
+            {
+                'fields': (
+                    'github_link',
+                    'linkedin_link',
+                    'instagram_link'
+                ),
+            },
+        ),
+    )
+
+@admin.register(DepartmentModel)
+class CustomClassAdmin(admin.ModelAdmin):
+    list_display = ('name', 'slug')
+    search_fields = ('name',)
+
+
+class CustomGroupAdmin(admin.ModelAdmin):
+    filter_horizontal = ('permissions',)
+
+admin.site.unregister(Group)
+admin.site.register(RolesModel, CustomGroupAdmin)
