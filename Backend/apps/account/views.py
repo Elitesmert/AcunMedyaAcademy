@@ -1,3 +1,10 @@
-from django.shortcuts import render
+from rest_framework.generics import ListAPIView
+from .models import CustomUserModel, DepartmentModel
+from .serializers import UserSerializer
 
-# Create your views here.
+class UserListAPIView(ListAPIView):
+    queryset = CustomUserModel.objects.all()
+    serializer_class = UserSerializer
+
+class DepartmentListAPIView(ListAPIView):
+    queryset = DepartmentModel.objects.all()
