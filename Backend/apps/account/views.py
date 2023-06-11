@@ -6,7 +6,7 @@ from .serializers import UserSerializer, ProfileSerializer
 
 
 class UserListAPIView(ListAPIView):
-    queryset = CustomUserModel.objects.all()
+    queryset = CustomUserModel.objects.filter(groups=1)
     serializer_class = UserSerializer
 
 
