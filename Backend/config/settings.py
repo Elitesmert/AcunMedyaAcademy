@@ -15,7 +15,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 # HOST SETTINGS
 SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
-ALLOWED_HOSTS = ['django-api-czay.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['academy-project-api-furkan.herokuapp.com', '127.0.0.1']
 
 # RESTFRAMEWORK SETTINGS
 REST_FRAMEWORK = {
