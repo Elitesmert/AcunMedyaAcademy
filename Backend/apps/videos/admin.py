@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import VideoModel, VideoCommentModel
 
-# Register your models here.
+admin.site.register(VideoModel)
+admin.site.register(VideoCommentModel)

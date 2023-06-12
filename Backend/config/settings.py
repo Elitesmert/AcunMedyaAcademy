@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.account',
     'apps.useful_links',
+    'apps.videos',
     # REST FRAMEWORK APPS
     'rest_framework_simplejwt',
     'rest_framework',

@@ -1,13 +1,14 @@
 from django.db import models
 from autoslug import AutoSlugField
 from ..account.models import CustomUserModel, DepartmentModel
+from .validators import validate_file_extension
 
 
 class VideoModel(models.Model):
     title = models.CharField(max_length=200)
     slug = AutoSlugField(populate_from='title', unique=True)
     description = models.TextField()
-    video = models.FileField(upload_to='videos/')
+    video_file = models.FileField(upload_to='videos/', validators=[validate_file_extension], null=True)
     instructor = models.ForeignKey(CustomUserModel, on_delete=models.CASCADE, related_name='videos',
                                    limit_choices_to={"groups": 2})
     department = models.ForeignKey(DepartmentModel, on_delete=models.CASCADE, related_name='videos', null=True)
