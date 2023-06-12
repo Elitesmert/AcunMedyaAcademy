@@ -12,7 +12,7 @@ def send_discord_message(sender, instance, created, **kwargs):
     user_name = instance.instructor.username
     video_title = instance.title
     video = instance.video_file
-    SITE_URL = 'https://furkanozay.tech/'
+    SITE_URL = 'https://furkanozay.tech'
     if created:
         message = f"{user_name}, {video_title} isminde yeni bir video paylaştı\nizlemek için: {SITE_URL}{settings.MEDIA_URL}{video}"
         webhook = DiscordWebhook(url=webhook_url, content=message)
