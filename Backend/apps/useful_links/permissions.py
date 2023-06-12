@@ -1,4 +1,4 @@
-from rest_framework.permissions import DjangoModelPermissions
+from rest_framework.permissions import DjangoModelPermissions, BasePermission
 from rest_framework.exceptions import PermissionDenied
 
 
@@ -10,3 +10,10 @@ class CreateUsefulLinksPermission(DjangoModelPermissions):
         if request.user.is_authenticated and group_permissions.filter(codename='add_usefullinksmodel').exists():
             return True
         raise PermissionDenied("Bu sayfaya erişim için izniniz bulunmuyor!")
+
+
+class IsOwner(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if obj.author == request.user or request.user.is_superuser:
+            return True
+        raise PermissionDenied("Başkasının eklediği link üzerinde işlem yapamazsınız!")
