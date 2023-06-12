@@ -7,7 +7,7 @@ class CreateUsefulLinksPermission(DjangoModelPermissions):
 
     def has_permission(self, request, view):
         group_permissions = request.user.groups.permissions
-        if request.user.is_authenticated and group_permissions.filter(codename='add_usefullinksmodel').exists():
+        if request.user.is_staff or group_permissions.filter(codename='add_usefullinksmodel').exists():
             return True
         raise PermissionDenied("Bu sayfaya erişim için izniniz bulunmuyor!")
 
