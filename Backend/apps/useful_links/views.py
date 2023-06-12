@@ -3,7 +3,7 @@ from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateAP
 from .models import UsefulLinksModel
 from .serializers import UsefulLinksSerializer
 from rest_framework.permissions import IsAuthenticated
-from .permissions import CreateUserfulLinksPermission
+from .permissions import CreateUsefulLinksPermission
 
 
 class ListUsefulLinksAPI(ListAPIView):
@@ -14,7 +14,7 @@ class ListUsefulLinksAPI(ListAPIView):
 
 class CreateUsefulLinksAPI(CreateAPIView):
     queryset = UsefulLinksModel.objects.all()
-    permission_classes = [CreateUserfulLinksPermission]
+    permission_classes = [IsAuthenticated, CreateUsefulLinksPermission]
     serializer_class = UsefulLinksSerializer
 
     def perform_create(self, serializer):

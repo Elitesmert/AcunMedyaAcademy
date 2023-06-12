@@ -2,7 +2,7 @@ from rest_framework.permissions import DjangoModelPermissions
 from rest_framework.exceptions import PermissionDenied
 
 
-class CreateUserfulLinksPermission(DjangoModelPermissions):
+class CreateUsefulLinksPermission(DjangoModelPermissions):
     authenticated_users_only = True
 
     def has_permission(self, request, view):
