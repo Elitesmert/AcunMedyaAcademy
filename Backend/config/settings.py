@@ -142,5 +142,8 @@ MEDIA_URL = '/media/'
 # AUTH USER SETTINGS
 AUTH_USER_MODEL = "account.CustomUserModel"
 
+# CSRF SETTINGS
+CSRF_TRUSTED_ORIGINS = ['https://*.furkanozay.tech', 'http://*.127.0.0.1']
+
 # DJANGO DEFAULT AUTO FIELD SETTINGS
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
