@@ -65,7 +65,6 @@ class CustomUserModel(AbstractUser):
     department = models.ManyToManyField(DepartmentModel, related_name='users', verbose_name='Bölümü')
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True, verbose_name='Avatar',
                                default='default-avatar.jpg')
-    period = models.PositiveIntegerField(null=True, verbose_name='Dönemi')
     birth_date = models.DateField(max_length=200, null=True, blank=True, verbose_name='Doğum Tarihi')
     github_link = models.URLField(max_length=200, null=True, blank=True, verbose_name='Github')
     linkedin_link = models.URLField(max_length=200, null=True, blank=True, verbose_name='LinkedIn')

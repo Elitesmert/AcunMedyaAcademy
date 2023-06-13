@@ -1,12 +1,21 @@
 from rest_framework.generics import ListAPIView, RetrieveAPIView, RetrieveUpdateAPIView, get_object_or_404
 from rest_framework.permissions import IsAuthenticated
-
 from .models import CustomUserModel, DepartmentModel
-from .serializers import UserSerializer, ProfileSerializer
+from .serializers import UserSerializer, ProfileSerializer, DepartmentSerializer
+
+
+class DepartmentsListAPI(ListAPIView):
+    queryset = DepartmentModel.objects.all()
+    serializer_class = DepartmentSerializer
 
 
 class UserListAPIView(ListAPIView):
     queryset = CustomUserModel.objects.filter(groups=1)
+    serializer_class = UserSerializer
+
+
+class InstructorListAPI(ListAPIView):
+    queryset = CustomUserModel.objects.filter(groups=2)
     serializer_class = UserSerializer
 
 
@@ -35,4 +44,3 @@ class ProfileAPIView(RetrieveUpdateAPIView):
 
     def perform_update(self, serializer):
         serializer.save(user=self.request.user)
-

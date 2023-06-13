@@ -6,10 +6,13 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from apps.account.views import InstructorListAPI, DepartmentsListAPI
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/users/', include('apps.account.urls')),
+    path('api/teachers/', InstructorListAPI.as_view(), name='instructor_list'),
+    path('api/departments/', DepartmentsListAPI.as_view(), name='instructor_list'),
     path('api/useful-links/', include('apps.useful_links.urls')),
     path('api/videos/', include('apps.videos.urls')),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
