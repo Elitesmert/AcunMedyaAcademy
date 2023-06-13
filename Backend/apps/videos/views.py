@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from .serializers import VideosSerializer, VideoCommentSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
 class ListVideosAPI(ListAPIView):
@@ -36,6 +37,7 @@ class UserVideosAPIView(APIView):
 
 class VideoDetailAPI(RetrieveAPIView):
     serializer_class = VideosSerializer
+    permission_classes = [IsAuthenticated]
     lookup_field = 'slug'
 
     def get_object(self):
@@ -56,6 +58,7 @@ class VideoCommentCreateAPI(CreateAPIView):
 
 
 class VideoCommentsListAPI(ListAPIView):
+    permission_classes = [IsAuthenticated]
     serializer_class = VideoCommentSerializer
 
     def get_queryset(self):
