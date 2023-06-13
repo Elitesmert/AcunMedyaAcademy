@@ -1,4 +1,8 @@
+import datetime
+
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
 from .models import CustomUserModel, DepartmentModel, RolesModel
 
 
@@ -27,3 +31,17 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUserModel
         fields = ['first_name', 'last_name', 'avatar', 'birth_date', 'github_link', 'linkedin_link', 'instagram_link']
+
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # Add custom claims
+        token['iat'] = datetime.datetime.now()
+        token['user'] = user.username
+        token['role'] = user.groups.name
+
+        return token

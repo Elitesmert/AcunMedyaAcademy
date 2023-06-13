@@ -1,7 +1,9 @@
 from rest_framework.generics import ListAPIView, RetrieveAPIView, RetrieveUpdateAPIView, get_object_or_404
 from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.views import TokenObtainPairView
+
 from .models import CustomUserModel, DepartmentModel
-from .serializers import UserSerializer, ProfileSerializer, DepartmentSerializer
+from .serializers import UserSerializer, ProfileSerializer, DepartmentSerializer, MyTokenObtainPairSerializer
 
 
 class DepartmentsListAPI(ListAPIView):
@@ -44,3 +46,7 @@ class ProfileAPIView(RetrieveUpdateAPIView):
 
     def perform_update(self, serializer):
         serializer.save(user=self.request.user)
+
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer

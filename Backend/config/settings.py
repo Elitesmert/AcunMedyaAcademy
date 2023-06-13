@@ -3,10 +3,9 @@ from pathlib import Path
 import os
 import environ
 
-
 env = environ.Env(
     # set casting, default value
-    DEBUG=(bool, False)
+    DEBUG=(bool, True)
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -17,7 +16,9 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
 ALLOWED_HOSTS = ['academy-project-api-furkan.herokuapp.com', '127.0.0.1', 'furkanozay.tech', 'www.furkanozay.tech']
-
+AUTHENTICATION_BACKENDS = [
+    'apps.account.backends.CustomUserModelBackend'
+]
 # RESTFRAMEWORK SETTINGS
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
@@ -41,6 +42,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",
 ]
+
 
 # INSTALLED APPS SETTINGS
 INSTALLED_APPS = [
