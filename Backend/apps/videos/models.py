@@ -42,6 +42,7 @@ class VideoCommentModel(models.Model):
     author = models.ForeignKey(CustomUserModel, on_delete=models.CASCADE, related_name='comments')
     video = models.ForeignKey(VideoModel, on_delete=models.CASCADE, related_name='comments')
     comment = models.TextField()
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')
     created_on = models.DateTimeField(editable=False)
     updated_on = models.DateTimeField(editable=False)
 
@@ -55,6 +56,13 @@ class VideoCommentModel(models.Model):
             self.created_on = timezone.now()
         self.updated_on = timezone.now()
         return super(VideoCommentModel, self).save(*args, **kwargs)
+
+    def children(self):
+        return VideoCommentModel.objects.filter(parent=self)
+
+    @property
+    def any_children(self):
+        return VideoCommentModel.objects.filter(parent=self).exists()
 
     def __str__(self):
         return self.author.get_full_name()

@@ -1,9 +1,10 @@
 from django.shortcuts import render
-from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateAPIView, DestroyAPIView, get_object_or_404, RetrieveAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateAPIView, DestroyAPIView, \
+    get_object_or_404, RetrieveAPIView
 from .models import VideoModel, VideoCommentModel
 from ..account.models import CustomUserModel
 from rest_framework.permissions import IsAuthenticated
-from .serializers import VideosSerializer
+from .serializers import VideosSerializer, VideoCommentSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -25,13 +26,13 @@ class UserVideosAPIView(APIView):
         # Kullanıcıyı slug'a göre alın
         user = get_object_or_404(CustomUserModel, slug=slug)
 
-
         # Kullanıcının videolarının queryset'ini alın
         queryset = self.get_queryset(user)
 
         # Videoları serialize edin
         serializer = VideosSerializer(queryset, many=True)
         return Response(serializer.data)
+
 
 class VideoDetailAPI(RetrieveAPIView):
     serializer_class = VideosSerializer
@@ -44,3 +45,18 @@ class VideoDetailAPI(RetrieveAPIView):
 
     def get_queryset(self):
         return VideoModel.objects.all()
+
+
+class VideoCommentCreateAPI(CreateAPIView):
+    queryset = VideoCommentModel.objects.all()
+    serializer_class = VideoCommentSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
+
+class VideoCommentsListAPI(ListAPIView):
+    serializer_class = VideoCommentSerializer
+
+    def get_queryset(self):
+        return VideoCommentModel.objects.filter(parent=None)

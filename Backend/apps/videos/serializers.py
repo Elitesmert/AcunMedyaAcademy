@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import VideoModel
+from .models import VideoModel, VideoCommentModel
 
 
 class VideosSerializer(serializers.ModelSerializer):
@@ -12,3 +12,21 @@ class VideosSerializer(serializers.ModelSerializer):
 
     def get_instructor_slug(self, obj):
         return str(obj.instructor.slug)
+
+
+class VideoCommentSerializer(serializers.ModelSerializer):
+    replies = serializers.SerializerMethodField()
+
+    class Meta:
+        model = VideoCommentModel
+        fields = '__all__'
+
+    def validate(self, attrs):
+        if attrs['parent']:
+            if attrs['parent'].video != attrs['video']:
+                raise serializers.ValidationError('Bir hata oluştu')
+        return attrs
+
+    def get_replies(self, obj):
+        if obj.any_children:
+            return VideoCommentSerializer(obj.children(), many=True).data
