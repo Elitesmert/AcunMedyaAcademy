@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateAPIView, DestroyAPIView, \
     get_object_or_404, RetrieveAPIView
 from .models import VideoModel, VideoCommentModel
@@ -7,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from .serializers import VideosSerializer, VideoCommentSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework_simplejwt.authentication import JWTAuthentication
+from .permissions import CreateVideosPermission
 
 
 class ListVideosAPI(ListAPIView):
@@ -47,6 +46,15 @@ class VideoDetailAPI(RetrieveAPIView):
 
     def get_queryset(self):
         return VideoModel.objects.all()
+
+
+class VideoAddAPI(CreateAPIView):
+    queryset = VideoModel.objects.all()
+    serializer_class = VideosSerializer
+    permission_classes = [IsAuthenticated, CreateVideosPermission]
+
+    def perform_create(self, serializer):
+        serializer.save(instructor=self.request.user)
 
 
 class VideoCommentCreateAPI(CreateAPIView):
