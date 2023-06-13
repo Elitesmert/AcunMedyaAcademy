@@ -32,3 +32,15 @@ class UserVideosAPIView(APIView):
         # Videoları serialize edin
         serializer = VideosSerializer(queryset, many=True)
         return Response(serializer.data)
+
+class VideoDetailAPI(RetrieveAPIView):
+    serializer_class = VideosSerializer
+    lookup_field = 'slug'
+
+    def get_object(self):
+        slug = self.kwargs['slug']
+        video = get_object_or_404(VideoModel, slug=slug)
+        return video
+
+    def get_queryset(self):
+        return VideoModel.objects.all()
