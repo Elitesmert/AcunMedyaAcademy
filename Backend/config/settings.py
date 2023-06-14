@@ -16,9 +16,6 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
 ALLOWED_HOSTS = ['academy-project-api-furkan.herokuapp.com', '127.0.0.1', 'furkanozay.tech', 'www.furkanozay.tech']
-AUTHENTICATION_BACKENDS = [
-    'apps.account.backends.CustomUserModelBackend'
-]
 # RESTFRAMEWORK SETTINGS
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
@@ -30,7 +27,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'rest_framework.authentication.TokenAuthentication'
+        'rest_framework.authentication.TokenAuthentication',
+        'apps.account.backends.CustomUserModelBackend'
     ],
     'DATETIME_FORMAT': '%Y-%m-%d %H:%M:%S',
 }

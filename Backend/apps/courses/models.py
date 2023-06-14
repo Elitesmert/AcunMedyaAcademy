@@ -38,6 +38,9 @@ class CourseCategoriesModel(models.Model):
         self.slug = self.get_slug()
         super(CourseCategoriesModel, self).save(*args, **kwargs)
 
+    def __str__(self):
+        return self.name
+
 
 class CoursesModel(models.Model):
     name = models.CharField(max_length=200)
