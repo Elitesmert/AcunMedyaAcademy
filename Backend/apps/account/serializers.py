@@ -1,21 +1,14 @@
 import datetime
-
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-
-from .models import CustomUserModel, CoursesModel, RolesModel
+from .models import CustomUserModel, RolesModel
+from ..courses.serializers import CoursesSerializer
 
 
 class RoleSerializer(serializers.ModelSerializer):
     class Meta:
         model = RolesModel
         exclude = ['id', 'permissions']
-
-
-class CoursesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CoursesModel
-        exclude = ['id']
 
 
 class UserSerializer(serializers.ModelSerializer):
