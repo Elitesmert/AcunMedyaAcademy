@@ -6,17 +6,24 @@ from django.contrib.auth.models import Group
 
 @admin.register(CustomUserModel)
 class CustomUserAdmin(UserAdmin):
-    list_filter = ('username', 'email')
+    list_display = ('username', 'email', 'is_staff', 'is_superuser', 'slug')
+    search_fields = ('username', 'email', 'slug')
+    ordering = ['email']
+    list_filter = ('email', 'date_joined')
     filter_horizontal = []
-
-    fieldsets = UserAdmin.fieldsets + (
+    fieldsets = (
+        (None, {'fields': ('email', 'password')}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser')}),
+        ('Grup Ayarları', {'fields': ('groups',)}),
+        ('Important dates', {'fields': ('last_login',)}),
+    )
+    fieldsets += (
         (
             'Ek ayarlar',  # you can also use None
             {
                 'fields': (
-                    'department',
+                    'courses',
                     'avatar',
-                    'period'
                 ),
             },
         ),
@@ -30,6 +37,13 @@ class CustomUserAdmin(UserAdmin):
                 ),
             },
         ),
+    )
+
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'password1', 'password2'),
+        }),
     )
 
 

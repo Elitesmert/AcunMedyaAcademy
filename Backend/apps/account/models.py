@@ -32,7 +32,8 @@ class RolesModel(models.Model):
 
 
 class CustomUserModel(AbstractUser):
-    email = models.EmailField(max_length=200, verbose_name='Eposta Adresi')
+    username = models.CharField(max_length=120, unique=True, null=True, blank=True)
+    email = models.EmailField(max_length=200, unique=True, verbose_name='Eposta Adresi')
     first_name = models.CharField(max_length=150, verbose_name='İsim')
     last_name = models.CharField(max_length=150, verbose_name='Soyisim')
     slug = AutoSlugField(populate_from='username', unique=True, editable=False)
@@ -46,10 +47,16 @@ class CustomUserModel(AbstractUser):
     linkedin_link = models.URLField(max_length=200, null=True, blank=True, verbose_name='LinkedIn')
     instagram_link = models.URLField(max_length=200, null=True, blank=True, verbose_name='Instagram')
 
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
+
     class Meta:
         db_table = 'users'
         verbose_name = 'Üye'
         verbose_name_plural = 'Üyeler'
+
+    def __str__(self):
+        return self.email
 
     def get_slug(self):
         slug = slugify(self.username.replace("ı", "i"))
@@ -59,7 +66,11 @@ class CustomUserModel(AbstractUser):
         if not self.id:
             self.created_on = timezone.now()
         self.updated_on = timezone.now()
+        # Eposta adresinden otomatik username oluşturma
+        if not self.username:
+            self.username = slugify(self.email.split('@')[0])
         self.slug = self.get_slug()
+
         # Avatar atanmamışsa varsayılan avatarı atama
         if not self.avatar:
             self.avatar = 'default-avatar.jpg'

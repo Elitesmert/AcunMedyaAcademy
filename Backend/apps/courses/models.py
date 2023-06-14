@@ -47,8 +47,8 @@ class CoursesModel(models.Model):
 
     class Meta:
         db_table = 'courses'
-        verbose_name = 'Sınıf'
-        verbose_name_plural = 'Sınıflar'
+        verbose_name = 'Kurs'
+        verbose_name_plural = 'Kurslar'
 
     def __str__(self):
         return self.name
