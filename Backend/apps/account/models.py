@@ -43,10 +43,17 @@ class RolesModel(models.Model):
         return super(RolesModel, self).save(*args, **kwargs)
 
 
+class CourseCategoriesModel(models.Model):
+    name = models.CharField(max_length=200)
+    slug = AutoSlugField(populate_from='name', unique=True)
+    image = models.ImageField(upload_to='course_categories_images/', null=True, blank=True)
+
+
 class CoursesModel(models.Model):
     name = models.CharField(max_length=200)
     slug = AutoSlugField(populate_from='name', unique=True)
-    image = models.ImageField(upload_to='lesson_images/', null=True)
+    image = models.ImageField(upload_to='lesson_images/', null=True, blank=True)
+    category = models.ForeignKey(CourseCategoriesModel, on_delete=models.CASCADE, related_name='courses', null=True)
 
     class Meta:
         db_table = 'courses'
