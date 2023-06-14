@@ -1,10 +1,20 @@
 from rest_framework import serializers
 from .models import VideoModel, VideoCommentModel
+from ..account.models import CustomUserModel
 from ..account.serializers import UserSerializer
 
 
+class VideoInstructorSerializer(UserSerializer):
+    courses = None
+    groups = None
+
+    class Meta:
+        model = CustomUserModel
+        fields = ['username', 'first_name', 'last_name']
+
+
 class VideosSerializer(serializers.ModelSerializer):
-    instructor = UserSerializer()
+    instructor = VideoInstructorSerializer()
 
     class Meta:
         model = VideoModel
