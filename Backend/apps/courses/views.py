@@ -3,7 +3,7 @@ from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateAP
 from rest_framework.permissions import IsAuthenticated
 from .models import CoursesModel
 from .serializers import CoursesSerializer
-from .permissions import CreateCoursePermission
+from .permissions import CreateCoursePermission, DeleteCoursePermission, UpdateCoursePermission
 
 
 class CourseListAPI(ListAPIView):
@@ -21,11 +21,11 @@ class CourseUpdateAPI(RetrieveUpdateAPIView):
     queryset = CoursesModel.objects.all()
     serializer_class = CoursesSerializer
     lookup_field = 'slug'
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, UpdateCoursePermission]
 
 
 class CourseDeleteAPI(DestroyAPIView):
     queryset = CoursesModel.objects.all()
     serializer_class = CoursesSerializer
     lookup_field = 'slug'
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, DeleteCoursePermission]
