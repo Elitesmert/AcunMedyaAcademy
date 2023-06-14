@@ -3,19 +3,7 @@ from django.contrib.auth.models import AbstractUser, Permission
 from django.utils import timezone
 from autoslug import AutoSlugField
 from django.utils.text import slugify
-
-
-class PeriodModel(models.Model):
-    name = models.CharField(max_length=150)
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
-    created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        db_table = 'periods'
-        verbose_name = 'Dönem'
-        verbose_name_plural = 'Dönemler'
+from ..courses.models import CoursesModel, CourseCategoriesModel, PeriodModel
 
 
 class RolesModel(models.Model):
@@ -41,38 +29,6 @@ class RolesModel(models.Model):
         self.updated_on = timezone.now()
         self.slug = self.get_slug()
         return super(RolesModel, self).save(*args, **kwargs)
-
-
-class CourseCategoriesModel(models.Model):
-    name = models.CharField(max_length=200)
-    slug = AutoSlugField(populate_from='name', unique=True)
-    image = models.ImageField(upload_to='course_categories_images/', null=True, blank=True)
-
-
-class CoursesModel(models.Model):
-    name = models.CharField(max_length=200)
-    slug = AutoSlugField(populate_from='name', unique=True)
-    image = models.ImageField(upload_to='lesson_images/', null=True, blank=True)
-    category = models.ForeignKey(CourseCategoriesModel, on_delete=models.CASCADE, related_name='courses', null=True)
-
-    class Meta:
-        db_table = 'courses'
-        verbose_name = 'Sınıf'
-        verbose_name_plural = 'Sınıflar'
-
-    def __str__(self):
-        return self.name
-
-    def get_slug(self):
-        slug = slugify(self.name.replace("ı", "i"))
-        return slug
-
-    def save(self, *args, **kwargs):
-        if not self.id:
-            self.created_on = timezone.now()
-        self.updated_on = timezone.now()
-        self.slug = self.get_slug()
-        return super(CoursesModel, self).save(*args, **kwargs)
 
 
 class CustomUserModel(AbstractUser):

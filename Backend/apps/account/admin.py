@@ -33,12 +33,6 @@ class CustomUserAdmin(UserAdmin):
     )
 
 
-@admin.register(CoursesModel)
-class CustomClassAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug')
-    search_fields = ('name',)
-
-
 class CustomGroupAdmin(admin.ModelAdmin):
     filter_horizontal = ('permissions',)
 
