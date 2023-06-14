@@ -3,10 +3,10 @@ from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateAP
 from .models import VideoModel, VideoCommentModel
 from ..account.models import CustomUserModel
 from rest_framework.permissions import IsAuthenticated
-from .serializers import VideosSerializer, VideoCommentSerializer
+from .serializers import VideosSerializer, VideoCreateUpdateSerializer, VideoCommentSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .permissions import CreateVideosPermission
+from .permissions import CreateVideosPermission, UpdateVideosPermission, IsOwner
 
 
 class ListVideosAPI(ListAPIView):
@@ -48,13 +48,20 @@ class VideoDetailAPI(RetrieveAPIView):
         return VideoModel.objects.all()
 
 
-class VideoAddAPI(CreateAPIView):
+class VideoCreateAPI(CreateAPIView):
     queryset = VideoModel.objects.all()
-    serializer_class = VideosSerializer
+    serializer_class = VideoCreateUpdateSerializer
     permission_classes = [IsAuthenticated, CreateVideosPermission]
 
     def perform_create(self, serializer):
         serializer.save(instructor=self.request.user)
+
+
+class VideoUpdateAPI(RetrieveUpdateAPIView):
+    queryset = VideoModel.objects.all()
+    serializer_class = VideoCreateUpdateSerializer
+    permission_classes = [IsAuthenticated, UpdateVideosPermission, IsOwner]
+    lookup_field = 'slug'
 
 
 class VideoCommentCreateAPI(CreateAPIView):

@@ -11,6 +11,12 @@ class VideosSerializer(serializers.ModelSerializer):
         fields = ['title', 'slug', 'description', 'video_file', 'created_on', 'updated_on', 'instructor']
 
 
+class VideoCreateUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VideoModel
+        exclude = ['instructor']
+
+
 class VideoCommentSerializer(serializers.ModelSerializer):
     replies = serializers.SerializerMethodField()
     author = UserSerializer()
