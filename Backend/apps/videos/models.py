@@ -3,7 +3,7 @@ from autoslug import AutoSlugField
 from django.utils import timezone
 from django.utils.text import slugify
 
-from ..account.models import CustomUserModel, DepartmentModel
+from ..account.models import CustomUserModel, CoursesModel
 from .validators import validate_file_extension
 
 
@@ -14,7 +14,7 @@ class VideoModel(models.Model):
     video_file = models.FileField(upload_to='videos/', validators=[validate_file_extension], null=True)
     instructor = models.ForeignKey(CustomUserModel, on_delete=models.CASCADE, related_name='videos',
                                    limit_choices_to={"groups": 2})
-    department = models.ForeignKey(DepartmentModel, on_delete=models.CASCADE, related_name='videos', null=True)
+    department = models.ForeignKey(CoursesModel, on_delete=models.CASCADE, related_name='videos', null=True)
     created_on = models.DateTimeField(editable=False)
     updated_on = models.DateTimeField(editable=False)
 

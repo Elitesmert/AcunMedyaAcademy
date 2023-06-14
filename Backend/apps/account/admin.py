@@ -3,6 +3,7 @@ from .models import *
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import Group
 
+
 @admin.register(CustomUserModel)
 class CustomUserAdmin(UserAdmin):
     list_filter = ('username', 'email')
@@ -31,7 +32,8 @@ class CustomUserAdmin(UserAdmin):
         ),
     )
 
-@admin.register(DepartmentModel)
+
+@admin.register(CoursesModel)
 class CustomClassAdmin(admin.ModelAdmin):
     list_display = ('name', 'slug')
     search_fields = ('name',)
@@ -39,6 +41,7 @@ class CustomClassAdmin(admin.ModelAdmin):
 
 class CustomGroupAdmin(admin.ModelAdmin):
     filter_horizontal = ('permissions',)
+
 
 admin.site.unregister(Group)
 admin.site.register(RolesModel, CustomGroupAdmin)

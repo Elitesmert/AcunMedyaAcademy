@@ -2,12 +2,12 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView, RetrieveUpdate
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from .models import CustomUserModel, DepartmentModel
+from .models import CustomUserModel, CoursesModel
 from .serializers import UserSerializer, ProfileSerializer, DepartmentSerializer, MyTokenObtainPairSerializer
 
 
 class DepartmentsListAPI(ListAPIView):
-    queryset = DepartmentModel.objects.all()
+    queryset = CoursesModel.objects.all()
     serializer_class = DepartmentSerializer
 
 

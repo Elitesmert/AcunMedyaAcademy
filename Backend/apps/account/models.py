@@ -4,6 +4,20 @@ from django.utils import timezone
 from autoslug import AutoSlugField
 from django.utils.text import slugify
 
+
+class PeriodModel(models.Model):
+    name = models.CharField(max_length=150)
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'periods'
+        verbose_name = 'Dönem'
+        verbose_name_plural = 'Dönemler'
+
+
 class RolesModel(models.Model):
     app_label = 'account'
     name = models.CharField(max_length=150, unique=True)
@@ -29,14 +43,13 @@ class RolesModel(models.Model):
         return super(RolesModel, self).save(*args, **kwargs)
 
 
-
-class DepartmentModel(models.Model):
+class CoursesModel(models.Model):
     name = models.CharField(max_length=200)
     slug = AutoSlugField(populate_from='name', unique=True)
     image = models.ImageField(upload_to='lesson_images/', null=True)
 
     class Meta:
-        db_table = 'departments'
+        db_table = 'courses'
         verbose_name = 'Sınıf'
         verbose_name_plural = 'Sınıflar'
 
@@ -52,7 +65,7 @@ class DepartmentModel(models.Model):
             self.created_on = timezone.now()
         self.updated_on = timezone.now()
         self.slug = self.get_slug()
-        return super(DepartmentModel, self).save(*args, **kwargs)
+        return super(CoursesModel, self).save(*args, **kwargs)
 
 
 class CustomUserModel(AbstractUser):
@@ -62,7 +75,7 @@ class CustomUserModel(AbstractUser):
     slug = AutoSlugField(populate_from='username', unique=True, editable=False)
     groups = models.ForeignKey(RolesModel, blank=True, on_delete=models.SET_NULL, null=True, related_name='users',
                                verbose_name='Rol')
-    department = models.ManyToManyField(DepartmentModel, related_name='users', verbose_name='Bölümü')
+    courses = models.ManyToManyField(CoursesModel, related_name='users', verbose_name='Bölümü')
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True, verbose_name='Avatar',
                                default='default-avatar.jpg')
     birth_date = models.DateField(max_length=200, null=True, blank=True, verbose_name='Doğum Tarihi')
