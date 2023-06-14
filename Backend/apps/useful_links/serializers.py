@@ -9,3 +9,9 @@ class UsefulLinksSerializer(serializers.ModelSerializer):
     class Meta:
         model = UsefulLinksModel
         fields = '__all__'
+
+
+class UsefulLinkCreateUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UsefulLinksModel
+        exclude = ['author']
