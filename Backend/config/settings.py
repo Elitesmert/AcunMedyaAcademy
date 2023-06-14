@@ -15,7 +15,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 # HOST SETTINGS
 SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
-ALLOWED_HOSTS = ['academy-project-api-furkan.herokuapp.com', '127.0.0.1', 'furkanozay.tech', 'www.furkanozay.tech']
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['127.0.0.1'])
 # RESTFRAMEWORK SETTINGS
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
