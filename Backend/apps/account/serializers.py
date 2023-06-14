@@ -12,7 +12,7 @@ class RoleSerializer(serializers.ModelSerializer):
         exclude = ['id', 'permissions']
 
 
-class DepartmentSerializer(serializers.ModelSerializer):
+class CoursesSerializer(serializers.ModelSerializer):
     class Meta:
         model = CoursesModel
         exclude = ['id']
@@ -20,7 +20,7 @@ class DepartmentSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     groups = RoleSerializer()
-    department = DepartmentSerializer(many=True)
+    department = CoursesSerializer(many=True)
 
     class Meta:
         model = CustomUserModel

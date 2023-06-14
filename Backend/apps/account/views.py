@@ -3,12 +3,12 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from .models import CustomUserModel, CoursesModel
-from .serializers import UserSerializer, ProfileSerializer, DepartmentSerializer, MyTokenObtainPairSerializer
+from .serializers import UserSerializer, ProfileSerializer, CoursesSerializer, MyTokenObtainPairSerializer
 
 
-class DepartmentsListAPI(ListAPIView):
+class CoursesListAPI(ListAPIView):
     queryset = CoursesModel.objects.all()
-    serializer_class = DepartmentSerializer
+    serializer_class = CoursesSerializer
 
 
 class UserListAPIView(ListAPIView):
