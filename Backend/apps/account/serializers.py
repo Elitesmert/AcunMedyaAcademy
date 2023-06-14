@@ -20,7 +20,7 @@ class CoursesSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     groups = RoleSerializer()
-    department = CoursesSerializer(many=True)
+    courses = CoursesSerializer(many=True)
 
     class Meta:
         model = CustomUserModel
