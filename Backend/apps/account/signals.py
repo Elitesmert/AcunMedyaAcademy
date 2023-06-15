@@ -1,6 +1,6 @@
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
-from .models import CustomUserModel, StudentModel, InstructorModel
+from .models import CustomUserModel, StudentModel, InstructorModel, StaffModel
 
 
 @receiver(post_save, sender=CustomUserModel)
@@ -11,6 +11,8 @@ def create_profile(sender, instance, created, **kwargs):
             StudentModel.objects.create(user=instance)
         elif instance.groups.name == 'Eğitmen':
             InstructorModel.objects.create(user=instance)
+        elif instance.groups.name == 'Personel':
+            StaffModel.objects.create(user=instance)
 
 
 @receiver(pre_save, sender=CustomUserModel)
@@ -26,9 +28,21 @@ def update_profile(sender, instance, **kwargs):
     if old_group_name != new_group_name:
         if new_group_name == 'Öğrenci':
             StudentModel.objects.create(user=instance)
-            InstructorModel.objects.filter(user=instance).delete()
+            if old_group_name == 'Eğitmen':
+                InstructorModel.objects.filter(user=instance).delete()
+            if old_group_name == 'Personel':
+                StaffModel.objects.filter(user=instance).delete()
         elif new_group_name == 'Eğitmen':
             InstructorModel.objects.create(user=instance)
-            StudentModel.objects.filter(user=instance).delete()
+            if old_group_name == 'Öğrenci':
+                StudentModel.objects.filter(user=instance).delete()
+            if old_group_name == 'Personel':
+                StaffModel.objects.filter(user=instance).delete()
+        elif new_group_name == 'Personel':
+            StaffModel.objects.create(user=instance)
+            if old_group_name == 'Öğrenci':
+                StudentModel.objects.filter(user=instance).delete()
+            if old_group_name == 'Eğitmen':
+                InstructorModel.objects.filter(user=instance).delete()
 
 

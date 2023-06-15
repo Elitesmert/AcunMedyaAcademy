@@ -88,7 +88,8 @@ class CustomUserModel(AbstractUser):
 
 
 class StudentModel(AbstractDatesModel):
-    user = models.OneToOneField(CustomUserModel, on_delete=models.CASCADE, related_name='student_profile', verbose_name='Üye')
+    user = models.OneToOneField(CustomUserModel, on_delete=models.CASCADE, related_name='student_profile',
+                                verbose_name='Üye')
     student_no = models.CharField(max_length=11, verbose_name='Öğrenci Numarası', unique=True, blank=True)
     course = models.ForeignKey(CoursesModel, on_delete=models.SET_NULL, null=True, blank=True,
                                related_name='course_users', verbose_name='Kurs')
@@ -110,10 +111,12 @@ class StudentModel(AbstractDatesModel):
 
 
 class InstructorModel(AbstractDatesModel):
-    user = models.OneToOneField(CustomUserModel, on_delete=models.CASCADE, related_name='instructor_profile', verbose_name='Üye')
+    user = models.OneToOneField(CustomUserModel, on_delete=models.CASCADE, related_name='instructor_profile',
+                                verbose_name='Üye')
     courses = models.ManyToManyField(CoursesModel, blank=True, verbose_name='Bağlı Olduğu Kurslar')
     start_date = models.DateTimeField(null=True, verbose_name='Başlangıç Tarihi')
     end_date = models.DateTimeField(null=True, blank=True, verbose_name='Ayrılış Tarihi')
+    is_leave = models.BooleanField(default=False)
 
     class Meta:
         db_table = 'instructors'
@@ -122,3 +125,27 @@ class InstructorModel(AbstractDatesModel):
 
     def __str__(self):
         return self.user.get_full_name()
+
+
+class StaffDepartmentModel(AbstractDatesModel):
+    name = models.CharField(max_length=200)
+
+    class Meta:
+        db_table = 'staff_departments'
+        verbose_name = 'Personel Departmanı'
+        verbose_name_plural = 'Personel Departmanları'
+
+
+class StaffModel(AbstractDatesModel):
+    user = models.OneToOneField(CustomUserModel, on_delete=models.CASCADE, related_name='staff_profile',
+                                verbose_name='Üye')
+    department = models.ForeignKey(StaffDepartmentModel, on_delete=models.SET_NULL, null=True,
+                                   verbose_name='Departmanı', related_name='staffs')
+    start_date = models.DateTimeField(null=True, verbose_name='Başlangıç Tarihi')
+    end_date = models.DateTimeField(null=True, blank=True, verbose_name='Ayrılış Tarihi')
+    is_leave = models.BooleanField(default=False)
+
+    class Meta:
+        db_table = 'staffs'
+        verbose_name = 'Personel'
+        verbose_name_plural = 'Personeller'

@@ -47,6 +47,8 @@ class CustomStudentAdmin(admin.ModelAdmin):
 
 
 admin.site.register(InstructorModel)
+admin.site.register(StaffModel)
+admin.site.register(StaffDepartmentModel)
 
 admin.site.unregister(Group)
 admin.site.register(RolesModel, CustomGroupAdmin)
