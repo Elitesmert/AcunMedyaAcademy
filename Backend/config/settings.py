@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'apps.useful_links',
     'apps.videos',
     'apps.courses',
+    'apps.tickets',
     # REST FRAMEWORK APPS
     'rest_framework_simplejwt',
     'rest_framework',
