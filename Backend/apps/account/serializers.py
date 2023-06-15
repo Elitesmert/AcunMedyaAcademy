@@ -23,7 +23,7 @@ class UserSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUserModel
-        fields = ['first_name', 'last_name', 'avatar', 'birth_date', 'github_link', 'linkedin_link', 'instagram_link']
+        fields = ['first_name', 'last_name', 'avatar']
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):

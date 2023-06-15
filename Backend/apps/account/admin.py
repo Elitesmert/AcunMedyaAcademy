@@ -13,27 +13,17 @@ class CustomUserAdmin(UserAdmin):
     filter_horizontal = []
     fieldsets = (
         (None, {'fields': ('email', 'password', 'first_name', 'last_name')}),
-        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser')}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'user_permissions')}),
         ('Grup Ayarları', {'fields': ('groups',)}),
         ('Important dates', {'fields': ('last_login',)}),
+
     )
     fieldsets += (
         (
             'Ek ayarlar',  # you can also use None
             {
                 'fields': (
-                    'courses',
                     'avatar',
-                ),
-            },
-        ),
-        (
-            'Sosyal Medya Hesapları',  # you can also use None
-            {
-                'fields': (
-                    'github_link',
-                    'linkedin_link',
-                    'instagram_link'
                 ),
             },
         ),
@@ -42,7 +32,7 @@ class CustomUserAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'password1', 'password2'),
+            'fields': ('email', 'password1', 'password2', 'first_name', 'last_name', 'groups'),
         }),
     )
 
@@ -50,6 +40,13 @@ class CustomUserAdmin(UserAdmin):
 class CustomGroupAdmin(admin.ModelAdmin):
     filter_horizontal = ('permissions',)
 
+
+@admin.register(StudentModel)
+class CustomStudentAdmin(admin.ModelAdmin):
+    list_display = ('user', 'student_no', 'course', 'period')
+
+
+admin.site.register(InstructorModel)
 
 admin.site.unregister(Group)
 admin.site.register(RolesModel, CustomGroupAdmin)

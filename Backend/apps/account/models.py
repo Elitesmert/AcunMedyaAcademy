@@ -4,9 +4,11 @@ from django.utils import timezone
 from autoslug import AutoSlugField
 from django.utils.text import slugify
 from ..courses.models import CoursesModel, CourseCategoriesModel, PeriodModel
+from .abstracts import AbstractDatesModel
+from .helpers import generate_student_number
 
 
-class RolesModel(models.Model):
+class RolesModel(AbstractDatesModel):
     app_label = 'account'
     name = models.CharField(max_length=150, unique=True)
     permissions = models.ManyToManyField(Permission, blank=True)
@@ -47,7 +49,8 @@ class CustomUserModel(AbstractUser):
     first_name = models.CharField(max_length=150, verbose_name='İsim')
     last_name = models.CharField(max_length=150, verbose_name='Soyisim')
     slug = AutoSlugField(populate_from='username', unique=True, editable=False)
-    groups = models.ForeignKey(RolesModel, blank=True, on_delete=models.SET_NULL, null=True, related_name='users',
+    groups = models.ForeignKey(RolesModel, blank=True, on_delete=models.SET_NULL, null=True, default=1,
+                               related_name='users',
                                verbose_name='Rol')
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True, verbose_name='Avatar',
                                default='default-avatar.jpg')
@@ -84,13 +87,36 @@ class CustomUserModel(AbstractUser):
         super(CustomUserModel, self).save(*args, **kwargs)
 
 
-class StudentModel(models.Model):
-    user = models.OneToOneField(CustomUserModel, on_delete=models.CASCADE, related_name='user')
-    student_no = models.CharField()
+class StudentModel(AbstractDatesModel):
+    user = models.OneToOneField(CustomUserModel, on_delete=models.CASCADE, related_name='student_profile', verbose_name='Üye')
+    student_no = models.CharField(max_length=11, verbose_name='Öğrenci Numarası', unique=True, blank=True)
     course = models.ForeignKey(CoursesModel, on_delete=models.SET_NULL, null=True, blank=True,
-                               related_name='course_users')
+                               related_name='course_users', verbose_name='Kurs')
     period = models.ForeignKey(PeriodModel, on_delete=models.SET_NULL, null=True, blank=True,
-                               related_name='period_users')
+                               related_name='period_users', verbose_name='Dönem')
+
+    class Meta:
+        db_table = 'students'
+        verbose_name = 'Öğrenci'
+        verbose_name_plural = 'Öğrenciler'
+
+    def save(self, *args, **kwargs):
+        if not self.student_no:
+            self.student_no = generate_student_number()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.user.get_full_name()
+
+
+class InstructorModel(AbstractDatesModel):
+    user = models.OneToOneField(CustomUserModel, on_delete=models.CASCADE, related_name='instructor_profile')
+    courses = models.ManyToManyField(CoursesModel, blank=True)
+
+    class Meta:
+        db_table = 'instructors'
+        verbose_name = 'Eğitmen'
+        verbose_name_plural = 'Eğitmenler'
 
     def __str__(self):
         return self.user.get_full_name()
