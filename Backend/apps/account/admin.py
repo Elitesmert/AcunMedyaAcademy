@@ -12,7 +12,7 @@ class CustomUserAdmin(UserAdmin):
     list_filter = ('email', 'date_joined')
     filter_horizontal = []
     fieldsets = (
-        (None, {'fields': ('email', 'password')}),
+        (None, {'fields': ('email', 'password', 'first_name', 'last_name')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser')}),
         ('Grup Ayarları', {'fields': ('groups',)}),
         ('Important dates', {'fields': ('last_login',)}),

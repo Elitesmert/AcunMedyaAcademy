@@ -67,7 +67,7 @@ class Ticket(models.Model):
                                  default=1)
     user = models.ForeignKey(CustomUserModel, on_delete=models.CASCADE, related_name='user_tickets')
     agent = models.ForeignKey(CustomUserModel, on_delete=models.SET_NULL, related_name='agent_tickets',
-                              limit_choices_to={'ticket_admin': True, 'ticket_agent': True}, null=True, blank=True)
+                              limit_choices_to={'groups': 3}, null=True, blank=True)
     category = models.ForeignKey(TicketCategories, on_delete=models.SET_DEFAULT, related_name='category_tickets',
                                  default=1)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -97,16 +97,3 @@ class TicketReplies(models.Model):
 
     def __str__(self):
         return self.user.get_full_name()
-
-
-class TicketCategoriesUsers(models.Model):
-    category = models.ForeignKey(TicketCategories, on_delete=models.CASCADE, related_name='categories_user')
-    user = models.ForeignKey(CustomUserModel, on_delete=models.CASCADE, related_name='categories_category')
-
-    class Meta:
-        db_table = 'ticket_categories_users'
-        verbose_name = 'Destek Kategori Yetkisi'
-        verbose_name_plural = 'Destek Kategori Yetkileri'
-
-    def __str__(self):
-        return self.category.name

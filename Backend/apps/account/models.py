@@ -31,6 +31,16 @@ class RolesModel(models.Model):
         return super(RolesModel, self).save(*args, **kwargs)
 
 
+class UserLinksModel(models.Model):
+    name = models.CharField(max_length=200)
+    link = models.URLField()
+
+    class Meta:
+        db_table = 'users_links'
+        verbose_name = 'Üye Profil Linki'
+        verbose_name_plural = 'Üye Profil Linkleri'
+
+
 class CustomUserModel(AbstractUser):
     username = models.CharField(max_length=120, unique=True, null=True, blank=True)
     email = models.EmailField(max_length=200, unique=True, verbose_name='Eposta Adresi')
@@ -39,13 +49,10 @@ class CustomUserModel(AbstractUser):
     slug = AutoSlugField(populate_from='username', unique=True, editable=False)
     groups = models.ForeignKey(RolesModel, blank=True, on_delete=models.SET_NULL, null=True, related_name='users',
                                verbose_name='Rol')
-    courses = models.ManyToManyField(CoursesModel, related_name='users', verbose_name='Bölümü')
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True, verbose_name='Avatar',
                                default='default-avatar.jpg')
-    birth_date = models.DateField(max_length=200, null=True, blank=True, verbose_name='Doğum Tarihi')
-    github_link = models.URLField(max_length=200, null=True, blank=True, verbose_name='Github')
-    linkedin_link = models.URLField(max_length=200, null=True, blank=True, verbose_name='LinkedIn')
-    instagram_link = models.URLField(max_length=200, null=True, blank=True, verbose_name='Instagram')
+    social_links = models.ManyToManyField(UserLinksModel, blank=True, related_name='social_links')
+    bio = models.TextField(null=True, blank=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
@@ -75,3 +82,15 @@ class CustomUserModel(AbstractUser):
         if not self.avatar:
             self.avatar = 'default-avatar.jpg'
         super(CustomUserModel, self).save(*args, **kwargs)
+
+
+class StudentModel(models.Model):
+    user = models.OneToOneField(CustomUserModel, on_delete=models.CASCADE, related_name='user')
+    student_no = models.CharField()
+    course = models.ForeignKey(CoursesModel, on_delete=models.SET_NULL, null=True, blank=True,
+                               related_name='course_users')
+    period = models.ForeignKey(PeriodModel, on_delete=models.SET_NULL, null=True, blank=True,
+                               related_name='period_users')
+
+    def __str__(self):
+        return self.user.get_full_name()
