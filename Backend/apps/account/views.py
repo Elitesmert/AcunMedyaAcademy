@@ -2,7 +2,7 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView, RetrieveUpdate
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from .models import CustomUserModel, CoursesModel
+from .models import CustomUserModel, InstructorModel
 from .serializers import UserSerializer, ProfileSerializer, MyTokenObtainPairSerializer
 
 

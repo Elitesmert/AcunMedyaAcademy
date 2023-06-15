@@ -1,11 +1,11 @@
 from rest_framework import serializers
 from .models import CoursesModel
-from ..account.models import CustomUserModel
+from ..account.models import InstructorModel
 
 
 class InstructorSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CustomUserModel
+        model = InstructorModel
         fields = ['id', 'username']
 
 
@@ -17,6 +17,6 @@ class CoursesSerializer(serializers.ModelSerializer):
         exclude = ['id']
 
     def get_course_instructors(self, obj):
-        instructors = obj.users.filter(groups=2)
+        instructors = obj.users.filter(groups__name='Eğitmen')
         serializer = InstructorSerializer(instructors, many=True)
         return serializer.data

@@ -13,9 +13,9 @@ class CustomUserAdmin(UserAdmin):
     filter_horizontal = []
     fieldsets = (
         (None, {'fields': ('email', 'password', 'first_name', 'last_name')}),
-        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'user_permissions')}),
-        ('Grup Ayarları', {'fields': ('groups',)}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'user_permissions', 'groups')}),
         ('Important dates', {'fields': ('last_login',)}),
+        ('Sosyal Bilgiler', {'fields': ('social_links', 'bio')}),
 
     )
     fieldsets += (
@@ -49,6 +49,7 @@ class CustomStudentAdmin(admin.ModelAdmin):
 admin.site.register(InstructorModel)
 admin.site.register(StaffModel)
 admin.site.register(StaffDepartmentModel)
+admin.site.register(UserLinksModel)
 
 admin.site.unregister(Group)
 admin.site.register(RolesModel, CustomGroupAdmin)

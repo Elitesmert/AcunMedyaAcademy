@@ -8,12 +8,11 @@ from ..courses.serializers import CoursesSerializer
 class RoleSerializer(serializers.ModelSerializer):
     class Meta:
         model = RolesModel
-        exclude = ['id', 'permissions']
+        fields = ['name']
 
 
 class UserSerializer(serializers.ModelSerializer):
     groups = RoleSerializer()
-    courses = CoursesSerializer(many=True)
 
     class Meta:
         model = CustomUserModel
