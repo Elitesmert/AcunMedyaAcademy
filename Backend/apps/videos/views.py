@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from .serializers import VideosSerializer, VideoCreateUpdateSerializer, VideoCommentSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .permissions import CreateVideosPermission, UpdateVideosPermission, IsOwner
+from .permissions import CreateVideosPermission, UpdateVideosPermission, DeleteVideosPermission, IsOwner
 
 
 class ListVideosAPI(ListAPIView):
@@ -64,9 +64,16 @@ class VideoUpdateAPI(RetrieveUpdateAPIView):
     lookup_field = 'slug'
 
 
+class VideoDeleteAPI(DestroyAPIView):
+    queryset = VideoModel.objects.all()
+    serializer_class = VideosSerializer
+    permission_classes = [IsAuthenticated, DeleteVideosPermission, IsOwner]
+
+
 class VideoCommentCreateAPI(CreateAPIView):
     queryset = VideoCommentModel.objects.all()
     serializer_class = VideoCommentSerializer
+    permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
