@@ -110,8 +110,10 @@ class StudentModel(AbstractDatesModel):
 
 
 class InstructorModel(AbstractDatesModel):
-    user = models.OneToOneField(CustomUserModel, on_delete=models.CASCADE, related_name='instructor_profile')
-    courses = models.ManyToManyField(CoursesModel, blank=True)
+    user = models.OneToOneField(CustomUserModel, on_delete=models.CASCADE, related_name='instructor_profile', verbose_name='Üye')
+    courses = models.ManyToManyField(CoursesModel, blank=True, verbose_name='Bağlı Olduğu Kurslar')
+    start_date = models.DateTimeField(null=True, verbose_name='Başlangıç Tarihi')
+    end_date = models.DateTimeField(null=True, blank=True, verbose_name='Ayrılış Tarihi')
 
     class Meta:
         db_table = 'instructors'
